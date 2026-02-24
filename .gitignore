@@ -2,6 +2,10 @@
 node_modules/
 jspm_packages/
 
+# Local uploads/storage
+server/uploads/artworks/
+server/uploads/csv/
+
 # Environment variables (Crucial for security)
 .env
 .env.local
