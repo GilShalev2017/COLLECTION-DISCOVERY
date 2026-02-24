@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ── Tenant root ───────────────────────────────────────────────────────────────
+model Museum {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique   // e.g. "metropolitan-museum" — used as URL key
+  country   String?
+  website   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users           User[]
+  collectionItems CollectionItem[]
+
+  @@map("museums")
+}
+
+// ── Museum staff ──────────────────────────────────────────────────────────────
+model User {
+  id           String   @id @default(uuid())
+  museumId     String
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("member") // "admin" | "member" — same access for now
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  museum Museum @relation(fields: [museumId], references: [id], onDelete: Cascade)
+
+  @@map("users")
+}
+
+// ── Artwork record ────────────────────────────────────────────────────────────
+model CollectionItem {
+  id               String   @id @default(uuid())
+  museumId         String
+  externalId       String
+  title            String
+  artist           String?
+  year             Int?
+  description      String?
+  imageUrl         String?
+  additionalImages String?  // comma-separated URLs stored as plain string
+  metadata         String?  // JSON blob
+  aiKeywords       String?  // comma-separated keywords
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  museum Museum @relation(fields: [museumId], references: [id], onDelete: Cascade)
+
+  // Key change from original schema:
+  // externalId is now unique PER MUSEUM, not globally.
+  // Museum A and Museum B can both import Met artwork #12345
+  // without a unique-constraint violation.
+  @@unique([museumId, externalId])
+  @@map("collection_items")
+}
