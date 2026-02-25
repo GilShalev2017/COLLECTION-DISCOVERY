@@ -18,11 +18,13 @@ const SCOPES = [
 
 export function generateGoogleAuthUrl(): string {
   const client = getOAuth2Client();
-  return client.generateAuthUrl({
+  const authUrl = client.generateAuthUrl({
     access_type: "offline",
     scope: SCOPES,
     prompt: "consent",
   });
+  // console.log(`authUrl: ${authUrl}`);
+  return authUrl;
 }
 
 export async function exchangeCodeForTokens(code: string) {
@@ -30,6 +32,8 @@ export async function exchangeCodeForTokens(code: string) {
   try {
     // This is the critical step where the 'code' becomes a real Token
     const { tokens } = await client.getToken(code);
+    // console.log(`code: ${code}`);
+    // console.log(`tokens: ${JSON.stringify(tokens)}`);
     return tokens;
   } catch (error) {
     console.error("Error exchanging code for tokens:", error);
