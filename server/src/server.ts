@@ -33,7 +33,7 @@ app.use("/api/auth", authRoutes);
 
 // ── Protected routes (JWT required) ──────────────────────────────────────
 app.use("/api", requireAuth, collectionRoutes);
-app.use("/api/users", userRoutes); // requireAuth is applied inside userRoutes
+app.use("/api/users", requireAuth, userRoutes); 
 
 app.get("/", (req, res) => {
   res.json({ message: "TEMA Collections API running" });

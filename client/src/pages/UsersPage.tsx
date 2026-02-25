@@ -54,7 +54,7 @@ export function UsersPage() {
       setForm({ name: "", email: "", password: "" });
       setShowForm(false);
     } catch (err: any) {
-      setFormError(err.message || err.error || "Failed to create user");
+      setFormError(err.error || err.message || "Failed to create user");
     } finally {
       setCreating(false);
     }
