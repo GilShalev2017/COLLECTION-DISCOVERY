@@ -29,10 +29,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 // ── Public routes (no auth needed) ───────────────────────────────────────
-app.post("/api/auth/login", (req, res, next) => {
-  console.log(">>> LOGIN ROUTE HIT");
-  next();
-});
 app.use("/api/auth", authRoutes);
 
 // ── Protected routes (JWT required) ──────────────────────────────────────

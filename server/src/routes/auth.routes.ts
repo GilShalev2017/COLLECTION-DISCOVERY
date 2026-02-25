@@ -9,7 +9,6 @@ import { Router } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import prisma from "../lib/prisma.js";
-import { requireAuth } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
@@ -134,27 +133,5 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// ── GET /auth/me ──────────────────────────────────────────────────────────
-router.get("/me", requireAuth, async (req: any, res) => {
-  try {
-    const user = await prisma.user.findUnique({
-      where: { id: req.user.userId },
-      include: { museum: true },
-    });
-
-    if (!user) return res.status(404).json({ error: "User not found" });
-
-    res.json({
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      role: user.role,
-      museumId: user.museumId,
-      museumName: user.museum.name,
-    });
-  } catch (err: any) {
-    res.status(500).json({ error: "Failed to fetch user" });
-  }
-});
 
 export default router;
