@@ -10,7 +10,7 @@
     "prisma:push": "prisma db push",
     "prisma:studio": "prisma studio",
     "lint": "eslint .",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc -p tsconfig.json",
     "test": "jest"
   },
   "dependencies": {
