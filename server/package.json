@@ -9,12 +9,13 @@
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:studio": "prisma studio",
+    "prisma:migrate": "prisma migrate dev",
     "lint": "eslint .",
     "type-check": "tsc -p tsconfig.json",
     "test": "jest"
   },
   "dependencies": {
-    "@prisma/adapter-better-sqlite3": "^7.4.0",
+    "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.4.0",
     "@types/multer": "^2.0.0",
     "axios": "^1.7.7",
@@ -28,6 +29,7 @@
     "node-cache": "^5.1.2",
     "openai": "^4.67.3",
     "papaparse": "^5.5.3",
+    "pg": "^8.20.0",
     "redis": "^5.11.0",
     "uuid": "^13.0.0"
   },
@@ -38,6 +40,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22.7.4",
     "@types/papaparse": "^5.5.2",
+    "@types/pg": "^8.18.0",
     "@types/uuid": "^10.0.0",
     "nodemon": "^3.1.7",
     "prisma": "^7.4.0",
