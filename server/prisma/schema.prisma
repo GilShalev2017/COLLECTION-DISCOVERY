@@ -4,8 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 // ── Tenant root ───────────────────────────────────────────────────────────────
@@ -63,5 +61,6 @@ model CollectionItem {
   // Museum A and Museum B can both import Met artwork #12345
   // without a unique-constraint violation.
   @@unique([museumId, externalId])
+  @@index([museumId, createdAt]) // For pagination performance
   @@map("collection_items")
 }

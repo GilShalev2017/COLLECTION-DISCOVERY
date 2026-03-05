@@ -59,6 +59,9 @@ router.get("/items", async (req: any, res) => {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 100;
 
+    console.log(`page: ${page}`);
+    console.log(`limit: ${limit}`);
+
     if (page < 1) return res.status(400).json({ error: "Page must be >= 1" });
     if (limit < 1 || limit > 1000)
       return res

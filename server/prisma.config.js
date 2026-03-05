@@ -11,4 +11,3 @@ export default defineConfig({
         path: 'prisma/migrations',
     },
 });
-//# sourceMappingURL=prisma.config.js.map

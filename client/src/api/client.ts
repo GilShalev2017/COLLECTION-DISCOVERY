@@ -12,7 +12,7 @@ import type { Artwork } from "../types";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "/api",
-  timeout: 30000,
+  timeout: 60000,
   headers: { "Content-Type": "application/json" },
 });
 
