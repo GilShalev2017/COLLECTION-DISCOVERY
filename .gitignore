@@ -5,6 +5,7 @@ jspm_packages/
 # Local uploads/storage
 server/uploads/artworks/
 server/uploads/csv/
+server/prisma/dev.db
 
 # Environment variables (Crucial for security)
 .env

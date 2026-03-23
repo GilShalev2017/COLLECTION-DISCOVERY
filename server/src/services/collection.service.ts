@@ -41,8 +41,14 @@ const aiCache = new NodeCache({ stdTTL: 86400, checkperiod: 600 });
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 console.log("[SERVICE] CollectionService initialized successfully");
-console.log("[SERVICE] OpenAI API Key configured:", !!process.env.OPENAI_API_KEY);
-console.log("[SERVICE] OpenAI API Key length:", process.env.OPENAI_API_KEY?.length || 0);
+console.log(
+  "[SERVICE] OpenAI API Key configured:",
+  !!process.env.OPENAI_API_KEY,
+);
+console.log(
+  "[SERVICE] OpenAI API Key length:",
+  process.env.OPENAI_API_KEY?.length || 0,
+);
 
 interface CSVRow {
   id?: string;
@@ -205,7 +211,7 @@ export class CollectionService {
       );
 
       return {
-        items: savedItems.filter((i) => i !== null),
+        items: savedItems.filter((i): i is NonNullable<typeof i> => i !== null),
         stats: {
           new: importedCount,
           updated: updatedCount,
@@ -258,9 +264,13 @@ export class CollectionService {
     try {
       console.log(`[AI] Starting OpenAI request for ${item.title}`);
       console.log(`[AI] Image URL: ${item.imageUrl}`);
-      console.log(`[AI] OpenAI API Key present: ${!!process.env.OPENAI_API_KEY}`);
-      console.log(`[AI] OpenAI API Key length: ${process.env.OPENAI_API_KEY?.length || 0}`);
-      
+      console.log(
+        `[AI] OpenAI API Key present: ${!!process.env.OPENAI_API_KEY}`,
+      );
+      console.log(
+        `[AI] OpenAI API Key length: ${process.env.OPENAI_API_KEY?.length || 0}`,
+      );
+
       const response = await openai.chat.completions.create({
         model: "gpt-4o",
         messages: [
@@ -303,14 +313,19 @@ export class CollectionService {
         code: err.code,
         type: err.type,
         stack: err.stack,
-        imageUrl: item.imageUrl
+        imageUrl: item.imageUrl,
       });
-      
+
       // Check if it's specifically an image download timeout
-      if (err.message?.includes('Timeout while downloading') || err.code === 'timeout') {
-        console.error(`[AI] Image download timeout for ${item.imageUrl} - this might be a network issue or the image URL is no longer accessible`);
+      if (
+        err.message?.includes("Timeout while downloading") ||
+        err.code === "timeout"
+      ) {
+        console.error(
+          `[AI] Image download timeout for ${item.imageUrl} - this might be a network issue or the image URL is no longer accessible`,
+        );
       }
-      
+
       keywords = ["historical", "portrait", "sepia", "formal"];
     }
 

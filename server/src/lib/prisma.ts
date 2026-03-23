@@ -1,30 +1,24 @@
-import { PrismaClient } from "@prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-import pg from "pg";
-import "dotenv/config";
+import { PrismaClient } from '@prisma/client';
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 
-const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
-
-const connectionString = process.env.DATABASE_URL;
-if (!connectionString) throw new Error("DATABASE_URL not defined");
-
-// ⚡ Configure the pool with max connections
-const pool = new pg.Pool({
-  connectionString,
-  max: 5, // <= this replaces `connection_limit`
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
-
-const adapter = new PrismaPg(pool);
-
-const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    adapter,
-    log: ["query", "warn", "error"], // log queries to monitor slow ones
+const prismaClientSingleton = () => {
+  const adapter = new PrismaBetterSqlite3({
+    url: process.env.DATABASE_URL || 'file:./prisma/dev.db',
   });
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+  return new PrismaClient({ adapter });
+};
+
+type PrismaSingleton = ReturnType<typeof prismaClientSingleton>;
+
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaSingleton | undefined;
+};
+
+const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma;
+}
 
 export default prisma;
