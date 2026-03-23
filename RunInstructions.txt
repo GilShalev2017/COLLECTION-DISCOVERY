@@ -1,0 +1,37 @@
+Running instrcutions:
+
+npm run prisma:generate
+npm run prisma:push //to create the table first!
+npx prisma studio
+
+npx prisma migrate dev --name add-museum-and-users
+npx prisma generate
+
+FOLDER=12aPRC1W8mFLqTkyzM77b7SProJdwRI2R
+
+
+'Vincent van Gogh'
+and look for Gogh
+
+Albrecht Dürer
+and look for Dürer
+
+'Rembrandt van Rijn'
+
+Christ Carrying the Cross, with the Crucifixion; The Resurrection, with the Pilgrims of Emmaus <- AI and more images
+
+'Claude Monet'
+
+'Pablo Picasso'
+'Henri Matisse'
+'Jackson Pollock'
+'Andy Warhol'
+'Georgia O'Keeffe'
+
+Subjects:
+dogs
+cats
+angles
+flower
+paint
+oil
